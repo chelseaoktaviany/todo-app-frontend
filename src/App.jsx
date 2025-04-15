@@ -10,92 +10,70 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faSun, faMoon } from "@fortawesome/free-solid-svg-icons";
 
-// import axios from "axios";
+import axios from "axios";
 
 function App() {
   const [data, setData] = useState([]);
   const [newTask, setNewTask] = useState("");
   const [darkMode, setDarkMode] = useState(false);
 
-  // const URL = "http://localhost:5000";
+  const URL = "http://localhost:5000";
 
-  // const fetchData = async () => {
-  //   await axios
-  //     .get(`${URL}/api/tasks/`)
-  //     .then((res) => {
-  //       console.log(res.data);
-  //       const { data } = res.data;
-  //       setData(data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
+  const fetchData = async () => {
+    await axios
+      .get(`${URL}/api/tasks/`)
+      .then((res) => {
+        console.log(res.data);
+        const { data } = res.data;
+        setData(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   const onChange = ({ target }) => setNewTask(target.value);
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    if (newTask.trim() === "") return;
+    await axios
+      .post(`${URL}/api/tasks/`, { title: newTask })
+      .then((res) => {
+        console.log(res.data);
 
-    const task = {
-      id: Date.now(),
-      title: newTask,
-      isCompleted: false,
-    };
-
-    setData([...data, task]);
-    setNewTask("");
-
-    console.log(task);
-
-    // await axios
-    //   .post(`${URL}/api/tasks/`, { title: newTask })
-    //   .then((res) => {
-    //     console.log(res.data);
-
-    //     fetchData();
-    //     setNewTask("");
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+        fetchData();
+        setNewTask("");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const onCheck = async (id) => {
-    setData((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === id ? { ...task, isCompleted: !task.isCompleted } : task
-      )
-    );
+    await axios
+      .put(`${URL}/api/tasks/${id}`)
+      .then((res) => {
+        console.log(res.data);
 
-    // await axios
-    //   .put(`${URL}/api/tasks/${id}`)
-    //   .then((res) => {
-    //     console.log(res.data);
-
-    //     fetchData();
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+        fetchData();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleDelete = async (id) => {
-    // await axios
-    //   .delete(`${URL}/api/tasks/${id}`)
-    //   .then((res) => {
-    //     console.log(res.data);
+    await axios
+      .delete(`${URL}/api/tasks/${id}`)
+      .then((res) => {
+        console.log(res.data);
 
-    //     fetchData();
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-
-    console.log(id);
-    setData((prevTasks) => prevTasks.filter((task) => task.id !== id));
+        fetchData();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleDarkMode = () => {
@@ -116,7 +94,7 @@ function App() {
   };
 
   useEffect(() => {
-    // fetchData();
+    fetchData();
 
     const stored = localStorage.getItem("darkMode");
     if (stored === "true") {
