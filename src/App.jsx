@@ -17,7 +17,7 @@ function App() {
   const [newTask, setNewTask] = useState("");
   const [darkMode, setDarkMode] = useState(false);
 
-  const URL = "http://localhost:5000";
+  const URL = import.meta.env.VITE_API_URL;
 
   const fetchData = async () => {
     await axios
