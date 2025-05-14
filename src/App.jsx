@@ -37,19 +37,6 @@ function App() {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-    // if (newTask.trim() === "") return;
-
-    // const task = {
-    //   id: Date.now(),
-    //   title: newTask,
-    //   isCompleted: false,
-    // };
-
-    // setData([...data, task]);
-    // setNewTask("");
-
-    // console.log(task);
-
     await axios
       .post(`${URL}/api/tasks/`, { title: newTask })
       .then((res) => {
@@ -64,12 +51,6 @@ function App() {
   };
 
   const onCheck = async (id) => {
-    // setData((prevTasks) =>
-    //   prevTasks.map((task) =>
-    //     task.id === id ? { ...task, isCompleted: !task.isCompleted } : task
-    //   )
-    // );
-
     await axios
       .put(`${URL}/api/tasks/${id}`)
       .then((res) => {
@@ -93,9 +74,6 @@ function App() {
       .catch((err) => {
         console.log(err);
       });
-
-    // console.log(id);
-    // setData((prevTasks) => prevTasks.filter((task) => task.id !== id));
   };
 
   const handleDarkMode = () => {
